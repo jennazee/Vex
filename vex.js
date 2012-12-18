@@ -43,10 +43,10 @@ vex.map = function(data, funct, context) {
 vex.sameAs = function(data1, data2) {
     //catches strings and integers
     if (data1 === data2) {
-        return true
+        return true;
     }
 
-    if typeof(data1) !== typeof(data2) {
+    if (typeof(data1) !== typeof(data2)) {
         return false;
     }
 
@@ -57,7 +57,7 @@ vex.sameAs = function(data1, data2) {
         }
         else {
             for (var i = 0; i < data1.length; i++) {
-                if data1[i] !== data2[i] {
+                if (data1[i] !== data2[i]) {
                     return false;
                 }
             }
@@ -65,7 +65,23 @@ vex.sameAs = function(data1, data2) {
         }
     }
 
+    //ok, object literals
+    if (data1.proto !== data2.proto) {
+        return false;
+    }
+    //defer to ECMAScript 5 lovely stuff
+    if (Object.getOwnPropertyNames) {
+        if vex.sameAs(Object.getOwnPropertyNames(data1)
+    }
     if 
+    for (var attr in data1) {
+        if (data2.hasOwnProperty(attr)) {
+            return vex.sameAs(data1[attr], data2[attr])
+        }
+        else {
+            return false;
+        }
+    }
 
 }
 
