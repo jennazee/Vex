@@ -18,7 +18,6 @@ vex.range = function(start, stop, step) {
     for (var i = start; step > 0 ? i < stop : i > stop; i += step){
         result.push(i);
     };
-    console.log(result)
     return result;
 };
 
@@ -56,12 +55,11 @@ vex.map = function(data, funct, context) {
     return result
 };
 
-// var reduce = function(data, accum, function, context) {
-
-// }
+var reduce = function(data, accum, function, context) {
+    
+}
 
 vex.sameAs = function(data1, data2) {
-    console.log(data1, data2)
     //free lunches
     if (data1 === data2) {
         return true;
@@ -78,6 +76,25 @@ vex.sameAs = function(data1, data2) {
         return data1 === data2;
     }
 
+    //arrays, or it never ends
+    if (data1.length === 0 && data2.length === 0) {
+        return true;
+    }
+
+    if (data1.length && data2.length) {
+        if (!(data1.length === data2.length)) {
+            return false;
+        }
+        else {
+            for (var i = 0; i < data1.length; i++) {
+                if (data1[i] !== data2[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
     attr1 = [];
     attr2 = [];
     //first, check for ECMAScript 5 lovely stuff
@@ -86,27 +103,17 @@ vex.sameAs = function(data1, data2) {
         attr2 = Object.keys(data2);
     }
     else { 
-        if (data1.length && data2.length) {
-            if (!(data1.length === data2.length)) {
-                return false;
-            }
-            else {
-                attr1 = vex.range(data1.length);
-                attr2 = vex.range(data2.length);
-            }
+        for (var attr in data1) {
+           attr1.push(data1[attr]);
         }
-        else {
-            for (var attr in data1) {
-               attr1.push(data1[attr]);
-            }
-            for (var attr in data2) {
-               attr2.push(data2[attr]);
-            }
+        for (var attr in data2) {
+           attr2.push(data2[attr]);
         }
     }
     if (vex.sameAs(attr1, attr2)) {
-        for (var attr in attr1) {
-            if (!(vex.sameAs(data1[attr], data2[attr]))) {
+        //use each
+        for (var j = 0; j < attr1.length; j++) {
+            if (data1[attr1[j]] !== data2[attr2[j]]) {
                 return false;
             }
         }
@@ -135,8 +142,6 @@ vex.sameAs = function(data1, data2) {
 
 //     return results;
 // };
-
-
 
 
 // var each = _.each = _.forEach = function(obj, iterator, context) {
